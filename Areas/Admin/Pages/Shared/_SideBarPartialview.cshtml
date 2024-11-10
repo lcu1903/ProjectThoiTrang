@@ -1,0 +1,66 @@
+﻿
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">           
+                <div class="text-wrapper">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <p class="profile-name">@User.Identity.Name</p>
+                    }
+                    
+                    <p class="designation">Administrator</p>
+                </div>               
+            </a>
+        </li>        
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/AdminOrders/Index">
+                <span class="menu-title">Quản lý đơn hàng</span>
+                <i class="icon-layers menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/AdminProducts/Index">
+                <span class="menu-title">Quản lý sản phẩm</span>
+                <i class='fas fa-tshirt menu-icon'></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/AdminBrands/Index">
+                <span class="menu-title">Quản lý thương hiệu</span>
+                <i class="icon-layers menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/AdminCustomers/Index">
+                <span class="menu-title">Danh sách khách hàng</span>
+                <i class="fa-solid fa-users menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/ThongKe/Index">
+                <span class="menu-title">Thống kê</span>
+                <i class="icon-layers menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item nav-category"><span class="nav-link">Quản lý hệ thống</span></li>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/AdminCategories/Index">
+                <span class="menu-title">Quản lý danh mục</span>
+                <i class="fa-solid fa-list menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/AdminRoles/Index">
+                <span class="menu-title">Quản lý quyền truy cập</span>
+                <i class="icon-settings menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/AdminAccounts/Index">
+                <span class="menu-title">Quản lý tài khoản</span>
+                <i class="icon-user menu-icon"></i>
+            </a>
+        </li>
+    </ul>
+</nav>

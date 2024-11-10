@@ -1,0 +1,34 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminBrands.CreateModel
+@{
+    ViewData["Title"] = "Thêm thương hiệu";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1> Thêm thương hiệu</h1>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Brand.BrandName" class="control-label"></label>
+                <input asp-for="Brand.BrandName" class="form-control" />
+                <span asp-validation-for="Brand.BrandName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand.Description" class="control-label"></label>
+                <input asp-for="Brand.Description" class="form-control" />
+                <span asp-validation-for="Brand.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success mr-2 btn-fw">Tạo</button>
+                <a class="btn btn-secondary btn-fw mr-2" asp-page="Index"><i class="icon-logout"></i> Quay về</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-3"></div>
+</div>

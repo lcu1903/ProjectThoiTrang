@@ -1,0 +1,49 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminAccounts.EditModel
+@{
+}
+<div class="container text-center">
+    <h1> Chỉnh sửa thông tin truy cập</h1>
+</div>
+<hr />
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+        <form class="forms-sample " method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Account.AccountId" />  
+            <input type="hidden" asp-for="Account.Password" />
+            <div class="form-group">
+                <label asp-for="Account.Email" class="control-label">Email</label>
+                <input asp-for="Account.Email" class="form-control" readonly />
+                <span asp-validation-for="Account.Email" class="text-danger"></span>
+            </div>            
+            <div class="form-group ">
+                <label asp-for="Account.Active" class="control-label">Trạng thái</label>
+                <select asp-for="Account.Active" class="form-control" asp-items="Model.TrangThai"></select>
+                <span asp-validation-for="Account.Active" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Account.RoleId" class="control-label">Quyền</label>
+                <select asp-for="Account.RoleId" class="form-control" asp-items="Model.QuyenTruyCap"></select>
+                <span asp-validation-for="Account.RoleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.CreateDate" class="control-label"></label>
+                <input type="date" asp-for="Account.CreateDate" class="form-control" readonly />
+                <span asp-validation-for="Account.CreateDate" class="text-danger"></span>
+            </div>            
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-success mr-2 btn-fw">Lưu</button>
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-dark btn-fw" asp-page="./Index">
+                        <i class="icon-logout"></i> Quay về
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

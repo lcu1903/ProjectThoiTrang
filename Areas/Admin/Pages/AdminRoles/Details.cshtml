@@ -1,0 +1,42 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminRoles.DetailsModel
+
+@{
+	ViewData["Title"] = "Thông tin truy cập";
+	Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1>Thông tin truy cập</h1>
+</div>
+<hr />
+<div class="card">
+    <div class="card-body">
+        @if(Model != null)
+        {
+            <table class="table ">
+                <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td>@Model.role.RoleId</td>
+                    </tr>
+                    <tr>
+                        <td>Tên quyền truy cập</td>
+                        <td>@Model.role.RoleName</td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả</td>
+                        <td>@Model.role.Description</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary btn-sm" asp-page="./Edit" asp-route-id="@Model.role.RoleId"><i class=" icon-pencil"></i> Chỉnh sửa </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-dark btn-sm" asp-page="./Index"><i class="icon-logout"></i> Quay về </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }        
+    </div>
+</div>

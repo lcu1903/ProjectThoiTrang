@@ -1,0 +1,158 @@
+﻿@page
+@model ProjectThoiTrang.Pages.Product.IndexModel
+@{
+    ViewData["Title"] = "Cửa hàng";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Cửa hàng</h4>
+                    <div class="breadcrumb__links">
+                        <a asp-page="/Index">Trang chủ</a>
+                        <span>Cửa hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shop Section Begin -->
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="shop__sidebar">
+                    <div class="shop__sidebar__search">
+                        <form method="get" asp-page="./Index">
+                            <input type="text" name="searchString" placeholder="Search..." value="@Model.SearchString">
+                            <button type="submit"><span class="icon_search"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="shop__product__option">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__left">
+                                <p>Showing of @Model.Products.Count() products</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__right">
+                                <p>Sắp xếp theo giá:</p>
+                                <select id="sort" asp-route-sortOption="@Model.CurrentSort">
+                                    <option value="lowToHigh">Giá thấp đến cao</option>
+                                    <option value="highToLow">Giá cao đến thấp </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">  
+                    @if(Model != null)
+                        @foreach (var item in Model.Products)
+                        {
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" data-setbg="images/Product/@item.Thumb">
+                                        <ul class="product__hover">
+                                            <li><a href="/Product/Details/@item.ProductId"><img src="~/assets/img/icon/search.png" alt=""></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6>@item.Productname</h6>
+                                        <hr />
+                                        <h6>@item.ShortDesc</h6>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            if (item.Stock > 0)
+                                            {
+                                                <a id="addToCartBtn_@item.ProductId" class="add-cart" data-product-id="@item.ProductId">Thêm vào giỏ hàng</a>
+                                            }
+                                            else
+                                            {
+                                                <h4 style="color:red">Hết hàng</h4>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a class="add-cart" asp-page="/Account/Login">Thêm vào giỏ hàng </a>
+                                        }
+                                        <div class="rating">
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <h5>@Model.Brands.FirstOrDefault(b => b.Value == item.BrandId.ToString())?.Text</h5>
+                                        @if (item.Discount != 0)
+                                        {
+                                            var price = item.Price - ((item.Price * item.Discount) / 100);
+                                            <h5>@Function.Function.ToVND(price)</h5>
+                                            <span style="text-decoration:line-through;">@Function.Function.ToVND(item.Price)</span>
+                                        }
+                                        else
+                                        {
+                                            <h5>@Function.Function.ToVND(item.Price)</h5>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">                                   
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item @(Model.Products.HasPreviousPage ? "" : "disabled")">
+                                    <a class="page-link" asp-page="./Index"
+                                       asp-route-pageIndex="@(Model.Products.PageIndex - 1)"
+                                       asp-route-sortOption="@Model.CurrentSort"                                       
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+
+                                @for (int i = 1; i <= Model.Products.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == Model.Products.PageIndex ? "active" : "")">
+                                        <a class="page-link" asp-page="./Index" asp-route-pageIndex="@i" asp-route-sortOption="@Model.CurrentSort" >@i</a>
+                                    </li>
+                                }
+
+                                <li class="page-item @(Model.Products.HasNextPage ? "" : "disabled")">
+                                    <a class="page-link" asp-page="./Index" asp-route-pageIndex="@(Model.Products.PageIndex + 1)" asp-route-sortOption="@Model.CurrentSort"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shop Section End -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#sort').change(function () {
+                var sortOption = $(this).val();
+                var url = '@Url.Page("./Index")' + '?sortOption=' + sortOption;
+                window.location.href = url;
+            });
+        });
+    </script>
+}

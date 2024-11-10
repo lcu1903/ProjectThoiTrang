@@ -1,0 +1,41 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminBrands.EditModel
+@{
+	ViewData["Title"] = "Edit";
+	Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1>Chỉnh sửa thương hiệu</h1>
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Brand.BrandId" />
+            <div class="form-group">
+                <label asp-for="Brand.BrandName" class="control-label">Tên thương hiệu</label>
+                <input asp-for="Brand.BrandName" class="form-control" />
+                <span asp-validation-for="Brand.BrandName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand.Description" class="control-label">Thông tin</label>
+                <textarea style="height:250px" asp-for="Brand.Description" class="form-control"></textarea>
+                <span asp-validation-for="Brand.Description" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-success mr-2 btn-fw">Lưu</button>
+                </div>
+                <div class="col-md-6">
+                    <a class="btn btn-dark btn-fw" asp-page="Index">
+                        <i class="icon-logout"></i> Quay về
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>

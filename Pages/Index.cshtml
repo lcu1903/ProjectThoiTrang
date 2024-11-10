@@ -1,0 +1,209 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+<section class="hero">
+    <div class="hero__slider owl-carousel">
+        <div class="hero__items set-bg" data-setbg="assets/img/hero/hero-1.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-7 col-md-8">
+                        <div class="hero__text">
+                            <h6>Summer Collection</h6>
+                            <h2>Fall - Winter Collections 2024</h2>
+                            <p>
+                                Cam kết chất lượng vượt trội.
+                            </p>
+                            <a asp-page="/Product/Index" class="primary-btn">Mua ngay <span class="arrow_right"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero__items set-bg" data-setbg="assets/img/hero/hero-2.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-7 col-md-8">
+                        <div class="hero__text">
+                            <h6>Summer Collection</h6>
+                            <h2>Fall - Winter Collections 2024</h2>
+                            <p>
+                                Một thương hiệu chuyên tạo ra những sản phẩm thiết yếu sang trọng.
+                            </p>
+                            <a asp-page="/Product/Index" class="primary-btn">Mua ngay <span class="arrow_right"></span></a>
+                            <div class="hero__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Banner Section Begin -->
+<section class="banner spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 offset-lg-4">
+                <div class="banner__item">
+                    <div class="banner__item__pic">
+                        <img src="~/assets/img/banner/banner-1.jpg" alt="">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2>Áo - Áo Khoác</h2>
+                        <a asp-page="/Product/Index">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="banner__item banner__item--middle">
+                    <div class="banner__item__pic">
+                        <img src="~/assets/img/banner/banner-2.jpg" alt="">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2>Phụ kiện</h2>
+                        <a asp-page="/Product/Index">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="banner__item banner__item--last">
+                    <div class="banner__item__pic">
+                        <img src="~/assets/img/banner/banner-3.jpg" alt="">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2>Giày</h2>
+                        <a asp-page="/Product/Index">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner Section End -->
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">Các sản phẩm </li>
+                    <li data-filter=".new-arrivals">Bán chạy nhất</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row product__filter">
+            @if(Model.Products != null)
+            {
+                foreach(var item in Model.Products)
+                {
+                    if(item.Homeflag == true)
+                    {
+                        if(item.BestSellers == true)
+                        {
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" data-setbg="images/Product/@item.Thumb">
+                                        <span class="label">Bán chạy nhất</span>
+                                        <ul class="product__hover">
+                                            <li><a href="/Product/Details/@item.ProductId"><img src="~/assets/img/icon/search.png" alt=""></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6>@item.Productname</h6>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            if (item.Stock > 0)
+                                            {
+                                                <a id="addToCartBtn_@item.ProductId" class="add-cart" data-product-id="@item.ProductId">Thêm vào giỏ hàng</a>
+                                            }
+                                            else
+                                            {
+                                                <h4 style="color:red">Hết hàng</h4>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a class="add-cart" asp-page="/Account/Login">Thêm vào giỏ hàng </a>
+                                        }
+                                        <div class="rating">
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        @if (item.Discount != 0)
+                                        {
+                                            var price = item.Price - ((item.Price * item.Discount) / 100);
+                                            <h5>@Function.Function.ToVND(price)</h5>
+                                            <span style="text-decoration:line-through;">@Function.Function.ToVND(item.Price)</span>
+                                        }
+                                        else
+                                        {
+                                            <h5>@Function.Function.ToVND(item.Price)</h5>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" data-setbg="images/Product/@item.Thumb">
+                                        <ul class="product__hover">
+                                            <li><a href="/Product/Details/@item.ProductId"><img src="~/assets/img/icon/search.png" alt=""></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6>@item.Productname</h6>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            if (item.Stock > 0)
+                                            {
+                                                <a id="addToCartBtn_@item.ProductId" class="add-cart" data-product-id="@item.ProductId">Thêm vào giỏ hàng</a>
+                                            }
+                                            else
+                                            {
+                                                <h4 style="color:red">Hết hàng</h4>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a class="add-cart" asp-page="/Account/Login">Thêm vào giỏ hàng </a>
+                                        }
+                                        <div class="rating">
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        @if (item.Discount != 0)
+                                        {
+                                            var price = item.Price - ((item.Price * item.Discount) / 100);
+                                            <h5>@Function.Function.ToVND(price)</h5>
+                                            <span style="text-decoration:line-through;">@Function.Function.ToVND(item.Price)</span>
+                                        }
+                                        else
+                                        {
+                                            <h5>@Function.Function.ToVND(item.Price)</h5>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }                    
+                }
+            }                        
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->

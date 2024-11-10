@@ -1,0 +1,51 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminCategories.EditModel
+@{
+    ViewData["Title"] = "Chỉnh sửa quyền truy cập";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1>Chỉnh sửa danh mục</h1>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <form class="forms-sample " method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Category.CatId" />
+            <div class="form-group">
+                <label asp-for="Category.Catname" class="control-label">Tên danh mục</label>
+                <input asp-for="Category.Catname" class="form-control" />
+                <span asp-validation-for="Category.Catname" class="text-danger"></span>
+            </div>           
+            <div class="form-group">
+                <label asp-for="Category.Published" class="control-label">Trạng thái</label>
+                <select asp-for="Category.Published" class="form-control">
+                    @if (Model.Category.Published == true)
+                    {
+                        <option value="true" selected>True</option>
+                        <option value="false">False</option>
+                    }
+                    else
+                    {
+                        <option value="true">True</option>
+                        <option value="false" selected>False</option>
+                    }
+                </select>
+                <span asp-validation-for="Category.Published" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-success mr-2 btn-fw">Lưu</button>
+                </div>
+                <div class="col-md-6">
+                    <a class="btn btn-dark btn-fw" asp-page="./Index">
+                        <i class="icon-logout"></i> Quay về
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>

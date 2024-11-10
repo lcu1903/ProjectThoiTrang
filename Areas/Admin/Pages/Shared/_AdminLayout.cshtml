@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"]</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/admin_assets/vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="~/admin_assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="~/admin_assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/admin_assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/lib/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="~/admin_assets/vendors/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="~/admin_assets/vendors/chartist/chartist.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link href="~/admin_assets/css/style.css" rel="stylesheet" />
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="~/admin_assets/images/favicon.png" />
+</head>
+<body>
+    @if (User.Identity.IsAuthenticated)
+    {
+        var accountIdClaim = User.Claims.FirstOrDefault(c => c.Type == "AccountId");
+        var accountId = accountIdClaim != null ? accountIdClaim.Value : "No Account ID";
+        <input type="hidden" id="userAccountId" value="@accountId" />
+    }
+
+    <div class="container-scroller">
+        <!-- partial:partials/_navbar.html -->
+        <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex align-items-center">                
+                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="~/admin_assets/images/logo-mini.svg" alt="logo" /></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
+                <h2 class="mb-0 font-weight-medium d-none d-lg-flex">Welcomeback</h2>   
+                <ul class="navbar-nav navbar-nav-right ml-auto">                                                            
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        var accountIdClaim = User.Claims.FirstOrDefault(c => c.Type == "AccountId");
+                        var accountId = accountIdClaim != null ? accountIdClaim.Value : "No Account ID";
+                        <li>Welcome, @User.Identity.Name |</li>                        
+                        <li>
+                            <form method="post" asp-page="/AccountPage/Logout">
+                                <button type="submit" style="border: none; background: none; color: black" class="header__top__links">Đăng xuất</button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="icon-menu"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:partials/_sidebar.html -->
+            @await Html.PartialAsync("_SideBarPartialview.cshtml")
+            <!-- partial -->
+            <div class="main-panel">
+                @RenderBody()                
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="~/admin_assets/js/dashboard.js"></script>
+    <script src="~/admin_assets/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/admin_assets/js/jquery-3.7.1.min.js"></script>
+    <script src="~/admin_assets/chart.js/Chart.min.js"></script>
+    <script src="~/admin_assets/moment/moment.min.js"></script>
+    <script src="~/admin_assets/daterangepicker/daterangepicker.js"></script>
+    <script src="~/admin_assets/chartist/chartist.min.js"></script>
+    <script src="https://kit.fontawesome.com/18e03ecffe.js" crossorigin="anonymous"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/admin_assets/js/off-canvas.js"></script>
+    <script src="~/admin_assets/js/misc.js"></script>
+    <!-- endinject -->
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

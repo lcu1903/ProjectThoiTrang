@@ -1,0 +1,105 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminProducts.IndexModel
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1> Danh sách sản phẩm</h1>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row">                    
+                    <div class="col-lg-6">
+                        <select id="catid" name="catid" asp-items="Model.DanhMuc">
+                            <option value="" disabled selected>Chọn danh mục</option>                            
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-right">
+                <a class="btn btn-primary btn-sm" asp-page="./Create"><i class="bi bi-plus-circle"></i> Thêm sản phẩm</a>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Thương hiệu</th>
+                    <th>Danh mục</th>
+                    <th>Giá</th>
+                    <th>Tồn kho</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="table_record">
+                @if (Model != null)
+                {
+                    foreach (var item in Model.Products)
+                    {
+                        <tr>
+                            <td>@item.Productname</td>
+                            <td>
+                                @Model.Brands.FirstOrDefault(b => b.Value == item.BrandId.ToString())?.Text
+                            </td>
+                            <td>
+                                @Model.Categories.FirstOrDefault(c => c.Value == item.CatId.ToString())?.Text
+                            </td>
+                            <td>@Function.Function.ToVND(@item.Price)</td>
+                            <td>@item.Stock</td>
+                            <td>
+                                <a class="btn btn-primary btn-sm mr-2" asp-page="./Edit" asp-route-id="@item.ProductId"><i class=" icon-pencil"></i> Chỉnh sửa</a>
+                                <a class="btn btn-secondary btn-sm mr-2" asp-page="./Details" asp-route-id="@item.ProductId"><i class="bi bi-info-circle"></i> Chi tiết</a>
+                                <a class="btn btn-warning btn-sm mr-2" asp-page="./Delete" asp-route-id="@item.ProductId"><i class="  icon-trash"></i> Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item @(Model.Products.HasPreviousPage ? "" : "disabled")">
+                    <a class="page-link" asp-page="./Index" asp-route-PageIndex="@(Model.Products.PageIndex - 1)"
+                       asp-route-CurrCat="@Model.CurrCat"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= Model.Products.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.Products.PageIndex ? "active" : "")">
+                        <a class="page-link" asp-page="./Index" asp-route-PageIndex="@i" asp-route-CurrCat="@Model.CurrCat">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(Model.Products.HasNextPage ? "" : "disabled")">
+                    <a class="page-link" asp-page="./Index" asp-route-PageIndex="@(Model.Products.PageIndex + 1)" asp-route-CurrCat="@Model.CurrCat"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#catid').change(function () {
+                var catID = $('#catid').val();               
+                $.getJSON('?handler=Filter', { catID: catID}, function (data) {
+                    if (data.status === "success") {
+                        window.location.href = data.targetURL;
+                    }
+                });                
+            });            
+        });
+    </script>
+}

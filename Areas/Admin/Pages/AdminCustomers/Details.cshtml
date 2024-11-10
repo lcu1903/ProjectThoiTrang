@@ -1,0 +1,67 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminCustomers.DetailsModel
+@{
+    ViewData["Title"] = "Chi tiết khách hàng";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container text-center">
+    <h1> Thông tin khách hàng</h1>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <table class="table ">
+                    <tr>
+                        <td>Tên khách hàng</td>
+                        <td>@Html.DisplayFor(model => model.Customer.Fullname)</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày sinh</td>
+                        <td>@Html.DisplayFor(model => model.Customer.Birthday)</td>
+                    </tr>                    
+                    <tr>
+                        <td>Địa chỉ</td>
+                        <td>@Html.DisplayFor(model => model.Customer.Address)</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>@Html.DisplayFor(model => model.Customer.Email)</td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td>@Html.DisplayFor(model => model.Customer.Phone)</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày tạo</td>
+                        <td>@Html.DisplayFor(model => model.Customer.CreateDate)</td>
+                    </tr>
+                    <tr>
+                        <td>Trạng thái</td>
+                        @if(Model.Customer.Active == true)
+                        {
+                            <td>Kích hoạt</td>
+                        }
+                        else
+                        {
+                            <td>Vô hiệu hóa</td>
+                        }                        
+                    </tr>
+                </table>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a asp-page="./Edit" asp-route-id="@Model.Customer.CusId" class="btn btn-primary btn-sm ">
+                            <i class=" icon-pencil"></i> Chỉnh sửa trạng thái
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-dark btn-sm" asp-page="./Index"><i class="icon-logout"></i> Quay về </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</div>

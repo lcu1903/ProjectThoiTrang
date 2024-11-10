@@ -1,0 +1,97 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminProducts.DetailsModel
+@{
+	ViewData["Title"] = "Chi tiết sản phẩm";
+	Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1> Chi tiết sản phẩm</h1>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <table class="table ">
+                    <tr>
+                        <td>Tên sản phẩm</td>
+                        <td>@Html.DisplayFor(model => model.Product.Productname)</td>
+                    </tr>
+                    <tr>
+                        <td>Danh mục sản phẩm</td>
+                        <td>@Html.DisplayFor(model => model.Product.CatId)</td>
+                    </tr>
+                    <tr>
+                        <td>Thương hiêu</td>
+                        <td>@Html.DisplayFor(model => model.Product.BrandId)</td>
+                    </tr>
+                    <tr>
+                        <td>Giá</td>
+                        <td>@Html.DisplayFor(model => model.Product.Price)</td>
+                    </tr>
+                    <tr>
+                        <td>Khuyến mãi</td>
+                        <td>@Html.DisplayFor(model => model.Product.Discount)</td>
+                    </tr>
+                    <tr>
+                        <td>Số lượng</td>
+                        <td>@Html.DisplayFor(model => model.Product.Stock)</td>
+                    </tr>
+                    <tr>
+                        <td>Bán chạy nhất</td>
+                        <td>@Html.DisplayFor(model => model.Product.BestSellers)</td>
+                    </tr>
+                    <tr>
+                        <td>Homeflag</td>
+                        <td>@Html.DisplayFor(model => model.Product.Homeflag)</td>
+                    </tr>
+                    <tr>
+                        <td>Active</td>
+                        <td>@Html.DisplayFor(model => model.Product.Active)</td>
+                    </tr>
+                    <tr>
+                        <td>Ảnh sản phẩm</td>
+                        <td>
+                            <img width="200" height="200" src="~/images/Product/@Model.Product.Thumb" alt="@Model.Product.Title" />
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td>Mô tả ngắn</td>
+                        <td>@Html.DisplayFor(model => model.Product.ShortDesc)</td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả</td>
+                        <td>@Html.DisplayFor(model => model.Product.Description)</td>
+                    </tr>
+                    <tr>
+                        <td>Tags</td>
+                        <td>@Html.DisplayFor(model => model.Product.Tags)</td>
+                    </tr>
+                    <tr>
+                        <td>Title</td>
+                        <td>@Html.DisplayFor(model => model.Product.Title)</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày tạo</td>
+                        <td>@Html.DisplayFor(model => model.Product.DateCreated)</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày chỉnh sửa</td>
+                        <td>@Html.DisplayFor(model => model.Product.DateModified)</td>
+                    </tr>
+
+                </table>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a class="btn btn-primary btn-sm" asp-page="./Edit" asp-route-id="@Model?.Product.ProductId"><i class=" icon-pencil"></i> Chỉnh sửa </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-dark btn-sm" asp-page="./Index"><i class="icon-logout"></i> Quay về </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</div>
+

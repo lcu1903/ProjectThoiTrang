@@ -1,0 +1,50 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminBrands.IndexModel
+@{
+    ViewData["Title"] = "Thương hiệu thời trang";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1> Danh sách thương hiệu</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 text-right">
+                <a class="btn btn-primary btn-sm" asp-page="./Create"><i class="bi bi-plus-circle"></i> Thêm thương hiệu</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tên thương hiệu</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model.Brands)
+                            {
+                                <tr>
+                                    <td>@item.BrandName</td>
+                                    <td>
+                                        <a class="btn btn-primary btn-sm mr-2" asp-page="./Edit" asp-route-id="@item.BrandId"><i class=" icon-pencil"></i> Chỉnh sửa</a>
+                                        <a class="btn btn-secondary btn-sm mr-2" asp-page="./Details" asp-route-id="@item.BrandId"><i class="bi bi-info-circle"></i> Chi tiết</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</div>

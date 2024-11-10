@@ -1,0 +1,310 @@
+﻿ @page "/Cart/CartDetails/{userId:int}"
+@model ProjectThoiTrang.Pages.Cart.CartDetailsModel
+@{
+	Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Giỏ hàng</h4>
+                    <div class="breadcrumb__links"> 
+                        <a asp-page="/Index">Trang chủ</a>
+                        <a asp-page="/Product/Index">Cửa hàng</a>
+                        <span>Giỏ hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hình ảnh sản phẩm</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
+                                <th>Tổng cộng</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(Model.CartDetails != null)
+                            {
+                                foreach(var item in Model.CartDetails)
+                                {
+                                    <tr>
+                                        <td class="product__cart__item">
+                                            <div class="product__cart__item__pic">
+                                                <img style="max-width:50%" src="~/images/Product/@item.Product.Thumb" alt="">
+                                            </div>                                           
+                                        </td>
+                                        <td class="product__cart__item">    
+                                            <input id="product-id" type="hidden" value="@item.ProductId"/>
+                                            <div class="product__cart__item__text">
+                                                <h6>@item.Product.Productname</h6>
+                                            </div>
+                                        </td>
+                                        <td class="quantity__item">
+                                            <div class="quantity">
+                                                <div class="pro-qty-2">                                                   
+                                                    <input type="text" value="@item.Quantity">                                                    
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="productPrice" class="cart__price">@(item.Product.Price - item.Product.Price*item.Product.Discount/100)</td>
+                                        <td id="totalproductPrice" class="cart__price">@(item.Quantity * (item.Product.Price - item.Product.Price * item.Product.Discount / 100))</td>
+                                        <td class="cart__close">
+                                            <button class="btn_delete"><i class="fa fa-close"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            }                                                        
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a asp-page="/Product/Index">Tiếp tục mua hàng</a>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <form method="post">
+                    <div class="cart__total">
+                        <h6>Tổng giỏ hàng</h6>
+                        <ul>
+                            @{
+                                var sum = 0;
+                                foreach (var item in Model.CartDetails)
+                                {
+
+                                    sum += (int)((item.Product.Price - item.Product.Price*item.Product.Discount/100) * item.Quantity);
+                                }
+                            }
+                            <li>Total <span id="totalCart">@sum</span></li>
+                        </ul>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var accountIdClaim = User.Claims.FirstOrDefault(c => c.Type == "AccountId");
+                            var accountId = accountIdClaim != null ? accountIdClaim.Value : "No Account ID";
+                            <a class="btn btn-primary" asp-page="/Cart/Checkout" asp-route-userId="@accountId">Thanh toán VnPay</a>
+                        }                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var userId = $('#userAccountId').val();            
+            console.log("Mã người dùng: " + userId);
+            //btn xóa
+            $(".btn_delete").click(function () {
+                var productId = $(this).closest('tr').find('.product__cart__item input[type="hidden"]').val();
+
+                var requestData = {
+                    UserId: userId,
+                    ProductId: productId
+                };
+                $.ajax({
+                    url: '/delete_cart',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(requestData),
+                    success: function (response) {
+                        console.log(response);
+                        if (response.value.success) {
+                            window.location.reload();
+                        } else {
+                            console.error("Lỗi: " + response.error);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Đã xảy ra lỗi khi xóa sản phẩm:", error);
+                    }
+                });
+            });            
+            // thêm sản phẩm
+            $('.inc').click(function () {
+                var $input = $(this).siblings('input');
+                var oldValue = parseFloat($input.val());
+                var productId = $(this).closest('tr').find('.product__cart__item input[type="hidden"]').val();
+                var productPrice = parseFloat($(this).closest('tr').find('#productPrice').text());
+                var totalproductPriceTxt = $(this).closest('tr').find('#totalproductPrice');
+                var totalproductPrice = parseFloat(totalproductPriceTxt.text());                
+                var quantity = 1;
+                var newVal = oldValue + quantity;
+
+
+                //tổng giỏ hàng
+                var totalCart = 0;
+                $.ajax({
+                    url: '/add_cart',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        UserId: userId,
+                        ProductId: productId,
+                        Quantity: quantity
+                    }),
+                    success: function (response) {
+                        if (response.value.success) {
+                            $.toast({
+                                heading: 'Success',
+                                text: 'Thêm thành công',
+                                showHideTransition: 'slide',
+                                icon: 'success',
+                                position: 'top-right',
+                                stack: false
+                            });
+                            $input.val(newVal);
+                            // cập nhật giá trị cho tổng tiền của sản phẩm
+                            totalproductPrice = productPrice * newVal;
+                            totalproductPriceTxt.text(totalproductPrice);
+                            // cập nhật giá trị cho tổng giỏ hàng
+                            $('.cart__price#totalproductPrice').each(function () {
+                                var price = parseFloat($(this).text());
+                                console.log(price);
+                                if (!isNaN(price)) {
+                                    totalCart += price;
+                                }
+                            });
+                            $('#totalCart').text(totalCart);
+                            $.ajax({
+                                url: '/cart_amount/' + userId,
+                                type: 'GET',
+                                success: function (response) {
+                                    if (response.value.success) {
+                                        $('#countCart').text(response.value.cartamout + " sản phẩm");
+                                    }
+                                },
+                                error: function () {
+                                    console.error('Không thể lấy số lượng sản phẩm trong giỏ hàng.');
+                                }
+                            });
+                        } else {
+                            $.toast({
+                                heading: 'Error',
+                                text: 'Quá số lượng sản phẩm hiện có',
+                                showHideTransition: 'fade',
+                                icon: 'error',
+                                position: 'top-right',
+                                stack: false
+                            });
+                            newVal = oldValue;
+                            $input.val(newVal);
+                        }
+                    },
+                    error: function () {
+                        console.error('Lỗi khi thực hiện yêu cầu AJAX.');
+                    }
+                });                
+            });
+            //giảm số lượng
+            $('.dec').click(function () {
+                var $input = $(this).siblings('input');
+                var oldValue = parseFloat($input.val());
+                var productId = $(this).closest('tr').find('.product__cart__item input[type="hidden"]').val();
+                var productPrice = parseFloat($(this).closest('tr').find('#productPrice').text());
+                var totalproductPriceTxt = $(this).closest('tr').find('#totalproductPrice');
+                var totalproductPrice = parseFloat(totalproductPriceTxt.text());
+                var quantity = -1;
+                var newVal = oldValue + quantity;
+                //tổng giỏ hàng
+                var totalCart = 0;
+                //khi giảm số lượng về 0 thì xóa sản phẩm khỏi giỏ hàng
+                if (newVal <= 0) {
+                    var requestData = {
+                        UserId: userId,
+                        ProductId: productId
+                    };
+                    $.ajax({
+                        url: '/delete_cart',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(requestData),
+                        success: function (response) {
+                            console.log(response);
+                            if (response.value.success) {
+                                window.location.reload();
+                            } else {
+                                console.error("Lỗi: " + response.error);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Đã xảy ra lỗi khi xóa sản phẩm:", error);
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        url: '/add_cart',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            UserId: userId,
+                            ProductId: productId,
+                            Quantity: quantity
+                        }),
+                        success: function (response) {                            
+                            if (response.value.success) {
+                                $.toast({
+                                    heading: 'Success',
+                                    text: 'Xóa thành công',
+                                    showHideTransition: 'slide',
+                                    icon: 'success',
+                                    position: 'top-right',
+                                    stack: false
+                                });
+                                $input.val(newVal);
+                                totalproductPrice = productPrice * newVal;
+                                totalproductPriceTxt.text(totalproductPrice);
+                                $('.cart__price#totalproductPrice').each(function () {
+                                    var price = parseFloat($(this).text());
+                                    console.log(price);
+                                    if (!isNaN(price)) {
+                                        totalCart += price;
+                                    }
+                                });
+                                $('#totalCart').text(totalCart);
+                                $.ajax({
+                                    url: '/cart_amount/' + userId,
+                                    type: 'GET',
+                                    success: function (response) {
+                                        if (response.value.success) {
+                                            $('#countCart').text(response.value.cartamout + " sản phẩm");
+                                        }
+                                    },
+                                    error: function () {
+                                        console.error('Không thể lấy số lượng sản phẩm trong giỏ hàng.');
+                                    }
+                                });
+                            }
+                        },
+                        error: function () {
+                            console.error('Lỗi khi thực hiện yêu cầu AJAX.');
+                        }
+                    });
+                }                
+            });
+
+        });
+
+    </script>
+}

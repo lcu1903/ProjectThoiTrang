@@ -1,0 +1,51 @@
+﻿@page "/Cart/Checkout/{userId:int}"
+@model ProjectThoiTrang.Pages.Cart.CheckoutModel
+@{
+    var total = 0;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout</title>
+</head>
+<body>
+    <h1>Checkout</h1>
+    @if (Model.CartDetails != null && Model.CartDetails.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Hình ảnh</th>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartDetails)
+                {
+                    
+                    var itemtotal = @item.Price;
+                    total += (int)itemtotal;
+                    <tr>
+                        <td><img src="~/images/Product/@item.Product.Thumb" alt="ảnh sản phẩm" style="width: 100px; height: 100px;" /></td>
+                        <td>@item.Product.Productname</td>
+                        <td>@item.Quantity</td>
+                        <td>@Function.Function.ToVND((int)@item.Price)</td>
+                    </tr>
+                    
+                }
+                <tr>
+                    <td colspan="3">Tổng tiền: </td>
+                    <td>@Function.Function.ToVND((int)total)</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    <form style="margin:50px" method="post">
+        <input type="hidden" name="payment" value="Thanh toán VnPay" />
+        <input type="hidden" name="userId" value="@Model.UserId" />
+        <input type="submit" class="primary-btn" value="Thanh toán VnPay" />
+    </form>
+</body>
+</html>

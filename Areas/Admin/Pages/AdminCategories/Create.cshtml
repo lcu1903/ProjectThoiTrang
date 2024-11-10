@@ -1,0 +1,37 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminCategories.CreateModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1> Thêm danh mục</h1>
+</div>
+
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Category.Catname" class="control-label"></label>
+                <input asp-for="Category.Catname" class="form-control" />
+                <span asp-validation-for="Category.Catname" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="Category.Published" class="control-label"></label>
+                <select asp-for="Category.Published" class="form-control">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>                
+                <span asp-validation-for="Category.Published" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success mr-2 btn-fw">Tạo</button>
+                <a class="btn btn-secondary btn-fw mr-2" asp-page="Index"><i class="icon-logout"></i> Quay về</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>

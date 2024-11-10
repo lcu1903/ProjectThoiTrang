@@ -1,0 +1,40 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminRoles.CreateModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1>Tạo quyền truy cập</h1>
+</div>
+
+<hr />
+<div class="row ">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Role.RoleName" class="control-label"></label>
+                <input asp-for="Role.RoleName" class="form-control" />
+                <span asp-validation-for="Role.RoleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role.Description" class="control-label"></label>
+                <input asp-for="Role.Description" class="form-control" />
+                <span asp-validation-for="Role.Description" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-success mr-2 btn-fw">Lưu</button>
+                </div>
+                <div class="col-md-6">
+                    <a class="btn btn-dark btn-fw" asp-page="./Index">
+                        <i class="icon-logout"></i> Quay về
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</div>

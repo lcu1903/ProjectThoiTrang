@@ -1,0 +1,59 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminOrders.IndexModel
+@{
+	Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container text-center">
+	<h1> Danh sách đơn hàng</h1>
+</div>
+<div class="card-body" style="overflow-x: auto;">
+    @if (Model.orders != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Mã đơn hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Khách hàng</th>
+                    <th>Sản phẩm - Số lượng - Giá</th>                             
+                    <th>Tổng giá</th>
+                    <th>Tình trạng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.orders)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.OrderDate</td>
+                        <td>@order.Customer.Fullname</td>
+                        <td>
+                            <ul>
+                                @foreach (var orderDetail in order.OrderDetails)
+                                {
+                                    <li>@orderDetail.Product.Productname - @orderDetail.Quantity -
+                                        @orderDetail.Price
+                                    </li>
+                                }
+                            </ul>
+                        </td>                        
+                        <td>@Function.Function.ToVND((int)@order.Amount)</td>
+                        @if (order.Paid == true)
+                        {
+                            <td>Đã thanh toán</td>
+                        }
+                        else
+                        {
+                            <td>Đã hủy</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Không có đơn hàng nào được tìm thấy.</p>
+    }
+</div>

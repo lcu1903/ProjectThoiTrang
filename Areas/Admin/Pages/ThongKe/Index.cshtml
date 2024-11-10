@@ -1,0 +1,38 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.ThongKe.IndexModel
+@{
+	Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+	<h1> Thống kê</h1>
+</div>
+<div class="card-body">
+    <table class="table">
+        <tbody>
+            <tr>                                                
+                <td>Tổng đơn hàng</td>
+                <td>@Model.tongDonHang</td>
+            </tr>
+            <tr>
+                <td>Tổng số khách hàng</td>
+                <td>@Model.tongKhachHang</td>
+            </tr>
+            <tr>
+                <td>Tổng số sản phẩm đã bán</td>
+                <td>@Model.tongSpDaBan</td>
+            </tr>
+            <tr>
+                <td>Tổng doanh thu</td>                
+                <td>@Function.Function.ToVND((int)@Model.tongDoanhThu)</td>
+            </tr>
+            <tr>
+                <td>Tổng số đơn hàng đã hoàn tất</td>
+                <td>@Model.tongDonHanDaHoanTat</td>
+            </tr>
+            <tr>                
+                <td>Tổng số đơn hàng đã hủy</td>
+                <td>@Model.tongDonHangDaHuy</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

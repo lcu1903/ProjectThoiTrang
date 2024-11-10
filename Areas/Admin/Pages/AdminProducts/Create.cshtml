@@ -1,0 +1,120 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminProducts.CreateModel
+@{
+    ViewData["Title"] = "Thêm sản phẩm";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1> Thêm sản phẩm</h1>
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-md-6">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Product.Productname" class="control-label">Tên sản phẩm</label>
+                <input asp-for="Product.Productname" class="form-control" />
+                <span asp-validation-for="Product.Productname" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label asp-for="Product.CatId" class="control-label">Danh mục sản phẩm</label>
+                    <select asp-for="Product.CatId" class="form-control" asp-items="@Model.Categories"></select>
+                    <span asp-validation-for="Product.CatId" class="text-danger"></span>
+                </div>
+                <div class="col-lg-6">
+                    <label asp-for="Product.BrandId" class="control-label">Thương hiệu</label>
+                    <select asp-for="Product.BrandId" class="form-control" asp-items="@Model.Brands"></select>
+                    <span asp-validation-for="Product.BrandId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <label asp-for="Product.Price" class="control-label">Giá</label>
+                    <input asp-for="Product.Price" class="form-control" />
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+                <div class="col-lg-4">
+                    <label asp-for="Product.Discount" class="control-label">Khuyến mãi</label>
+                    <input asp-for="Product.Discount" class="form-control" />
+                    <span asp-validation-for="Product.Discount" class="text-danger"></span>
+                </div>
+                <div class="col-lg-4">
+                    <label asp-for="Product.Stock" class="control-label">Số lượng</label>
+                    <input asp-for="Product.Stock" class="form-control" />
+                    <span asp-validation-for="Product.Stock" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <label asp-for="Product.BestSellers" class="control-label">Bán chạy nhất</label>
+                    <select asp-for="Product.BestSellers" class="form-control">
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                    <span asp-validation-for="Product.BestSellers" class="text-danger"></span>
+                </div>
+                <div class="col-lg-4">
+                    <label asp-for="Product.Homeflag" class="control-label"></label>
+                    <select asp-for="Product.Homeflag" class="form-control">
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                    <span asp-validation-for="Product.Homeflag" class="text-danger"></span>
+                </div>
+                <div class="col-lg-4">
+                    <label asp-for="Product.Active" class="control-label"></label>
+                    <select asp-for="Product.Active" class="form-control">
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                    <span asp-validation-for="Product.Active" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <label asp-for="Product.Thumb" class="control-label">Ảnh sản phẩm</label>
+                <input name="fThumb" type="file" asp-for="Product.Thumb" class="form-control-file" />
+                <span asp-validation-for="Product.Thumb" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.ShortDesc" class="control-label">Mô tả ngắn</label>
+                <input asp-for="Product.ShortDesc" class="form-control" />
+                <span asp-validation-for="Product.ShortDesc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Description" class="control-label">Mô tả</label>
+                <textarea asp-for="Product.Description" class="form-control"></textarea>               
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+
+                <div class="form-group">
+                    <label asp-for="Product.Tags" class="control-label"></label>
+                    <input asp-for="Product.Tags" class="form-control" />
+                    <span asp-validation-for="Product.Tags" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product.Title" class="control-label"></label>
+                    <input asp-for="Product.Title" class="form-control" />
+                    <span asp-validation-for="Product.Title" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-success mr-2 btn-fw">Lưu</button>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn btn-dark btn-fw" asp-page="./Index">
+                            <i class="icon-logout"></i> Quay về
+                        </a>
+                    </div>
+                </div>
+        </form>
+    </div>
+    <div class="col-lg-3"></div>
+</div>

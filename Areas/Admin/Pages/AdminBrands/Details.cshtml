@@ -1,0 +1,33 @@
+﻿
+@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminBrands.DetailsModel
+@{
+    ViewData["Title"] = "Thông tin thương hiệu ";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1>Thông tin thương hiệu</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <form class="forms-sample">
+                    <div class="form-group">
+                        <label asp-for="Brand.BrandName" class="control-label">Thương hiệu</label>
+                        <input asp-for="Brand.BrandName" class="form-control " disabled />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Brand.Description" class="control-label">Thông tin</label>
+                        <textarea asp-for="Brand.Description" class="form-control" disabled></textarea>
+                    </div>
+                </form>
+                <a class="btn btn-primary btn-sm" asp-page="./Edit" asp-route-id="@Model?.Brand.BrandId"><i class=" icon-pencil"></i> Chỉnh sửa </a>
+                <a class="btn btn-dark btn-sm" asp-page="./Index"><i class="icon-logout"></i> Quay về </a>
+            </div>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+</div>

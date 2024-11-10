@@ -1,0 +1,39 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminRoles.DeleteModel
+@{
+    ViewData["Title"] = "Xóa quyền truy cập";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1>Xóa quyền truy cập</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table ">
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>@Model.Role.RoleId</td>
+                </tr>
+                <tr>
+                    <td>Tên quyền truy cập</td>
+                    <td>@Model.Role.RoleName</td>
+                </tr>
+                <tr>
+                    <td>Mô tả</td>
+                    <td>@Model.Role.Description</td>
+                </tr>
+                <tr>
+                    <td>
+                        <form method="post" >
+                            <input type="hidden" />
+                            <input type="submit" value="Xác nhận xóa" class="btn btn-danger btn-sm" />
+                        </form>
+                    </td>
+                    <td><a class="btn btn-dark btn-sm" asp-page="./Index"><i class="icon-logout"></i> Quay về </a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

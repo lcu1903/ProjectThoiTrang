@@ -1,0 +1,216 @@
+﻿@page "/Product/Details/{id:int}"
+@model ProjectThoiTrang.Pages.Product.DetailsModel
+@{
+    ViewData["Title"] = "Thông tin sản phẩm";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+    string imgPath = "assets/img/shop-details/" + Function.Function.FormatString(Model.Product.Cat.Catname) +"/"+ Helper.Help.SUrl(Model.Product.Productname);
+}
+<section style="margin-bottom:50px" class="shop-details">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="product__details__pic">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product__details__breadcrumb">
+                                <a href="/Index">Trang chủ</a>
+                                <a href="/Product">Cửa hàng</a>
+                                <span>Chi tiết sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+									<a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">										
+                                        <div class="product__thumb__pic set-bg">
+                                            <img src="~/@imgPath/anh1.jpg" />
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">
+                                        <div class="product__thumb__pic set-bg">
+                                            <img src="~/@imgPath/anh2.jpg" />
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">
+                                        <div class="product__thumb__pic set-bg">
+                                            <img src="~/@imgPath/anh3.jpg" />
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">
+                                        <div class="product__thumb__pic set-bg">
+                                            <img src="~/@imgPath/anh4.jpg" />                                      
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6 col-md-9">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="~/images/Product/@Model.Product.Thumb"  alt="">
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="~/@imgPath/anh2.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-3" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="~/@imgPath/anh3.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-4" role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="~/@imgPath/anh4.jpg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+			<div class="product__details__content">
+				<div class="container">
+					<div class="row d-flex justify-content-center">
+						<div class="col-lg-8">
+							<div class="product__details__text">
+								<h4>@Model.Product.Productname</h4>
+								<div class="rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star-o"></i>
+									<span> - 5 Đánh giá</span>
+								</div>
+                                @if (Model.Product.Discount > 0)
+                                {
+                                    var disPrice = Model.Product.Price - (Model.Product.Price * Model.Product.Discount / 100);
+                                    <span>@Function.Function.ToVND(disPrice)</span>
+                                    <span style="text-decoration:line-through;">@Function.Function.ToVND(Model.Product.Price)</span>
+                                }
+                                else
+                                {
+                                    <h3>
+                                        @Function.Function.ToVND(Model.Product.Price)
+                                    </h3>
+                                }                                
+								<p>
+									@Model.Product.ShortDesc
+								</p>							
+								<div class="product__details__cart__option">	
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        if (@Model.Product.Stock > 0)
+                                        {
+                                            <a id="addToCartBtn_@Model.Product.ProductId" style="color:white" class="primary-btn add-cart " data-product-id="@Model.Product.ProductId">Thêm vào giỏ hàng</a>
+                                        }
+                                        else
+                                        {
+                                            <h4 style="color:red">Hết hàng</h4>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <a style="color:white" class="primary-btn add-cart " asp-page="/Account/Login">Thêm vào giỏ hàng </a>
+                                    }									
+								</div>								
+								<div class="product__details__last__option">
+									<h5><span>Guaranteed Safe Checkout</span></h5>
+									<img src="~/assets/img/shop-details/details-payment.png" alt="">
+									<ul>										
+										<li><span>Danh mục:</span> @Model.Product.Cat.Catname</li>
+										<li><span>Tag:</span> @Model.Product.Tags</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="product__details__content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product__details__tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5"
+                                       role="tab">Thông tin sản phẩm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">
+                                        Chính sách đổi trả
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <div class="product__details__tab__content__item">
+                                            <p>
+                                                Bắt nhịp phong cách sống năng động và hiện đại cùng áo sơ mi Basic Multi Mega Logo Prints. Với chất liệu denim trẻ trung kết hợp cùng họa tiết logo MLB monogram nổi bật, chiếc áo không chỉ góp phần tạo nên điểm nhấn ấn tượng cho mọi outfit mà còn giúp bạn tự tin thể hiện phong cách riêng biệt của mình.
+                                                Thương hiệu: MLB
+                                                Xuất xứ: Hàn Quốc
+                                                Giới tính: Unisex
+                                                Kiểu dáng: Áo sơ mi denim
+                                                Màu sắc: Cream, Indigo
+                                                Chất liệu: 18% Cotton,  61% rayon, 21% polyester
+                                                Cổ bẻ, tay ngắn
+                                                Hoạ tiết: Monogram
+                                                Thiết kế:
+                                                Nút cài kim loại nổi bật ở giữa
+                                                Phối một túi vuông ở ngực trái
+                                                Thiết kế họa tiết monogram cá tính, thời thượng
+                                                Chất vải denim mềm mại, đường may tỉ mỉ, chắc chắn
+                                                Màu sắc hiện đại, dễ dàng phối với nhiều trang phục và phụ kiện khác
+                                                Phom áo: Rộng, thoải mái
+                                                Thích hợp mặc trong các dịp: Đi chơi, đi làm....
+                                                Xu hướng theo mùa: Sử dụng được tất cả các mùa trong năm
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-6" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <div class="product__details__tab__content__item">
+                                            <p>
+                                                Áp dụng cho toàn bộ sản phẩm quần áo nguyên giá.<br />
+                                                <b>Đối tượng khách hàng</b> Tất cả khách hàng sử dụng dịch vụ tại cửa hàng của chúng tôi <br />
+                                                Thời gian đổi/ trả hàng:
+
+                                                Đổi hàng: Trong vòng 30 ngày kể từ ngày khách hàng nhận được sản phẩm.
+                                                Trả hàng: Trong vòng 03 ngày kể từ ngày khách hàng nhận được sản phẩm. <br />
+                                                Lưu ý: Không áp dụng cho các sản phẩm giảm giá từ 30% trở lên và các sản phẩm mua trực tiếp tại hệ thống cửa hàng của chúng tôi.<br />
+
+                                                Ghi chú: Thời hạn đổi/trả hàng được tính từ ngày khách hàng nhận hàng cho đến ngày khách hàng gửi hàng đổi/trả cho đơn vị vận chuyển.<br />
+                                                Tham khảo thêm thông tin tại <a href="#">Chính sách đổi trả hàng</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</section>
+<!-- Shop Details Section End -->

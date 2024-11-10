@@ -1,0 +1,46 @@
+﻿ @page "/Account/Thongtindonhang/{userId:int}"
+@model ProjectThoiTrang.Pages.Account.ThongtindonhangModel
+@{
+	Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center">Danh sách đơn hàng</h2>
+@if (Model.Orders != null && Model.Orders.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Ngày đặt</th>
+                <th>Ngày thanh toán</th>
+                <th>Tổng giá</th>
+                <th>Tình trạng</th>
+                <th>Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.OrderDate</td>
+                    <td>@order.PaymentDate</td>
+                    <td>@order.Amount</td>
+                    <td>@((bool)order.Paid ? "Đã thanh toán" : "Đã hủy")</td>
+                    <td>
+                        <div>
+                            @foreach (var detail in order.OrderDetails)
+                            {
+                                <p>@detail.Product.Productname - @detail.Quantity - @detail.Price</p>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3 style="text-align:center">Bạn không có đơn hàng nào.</h3>
+}

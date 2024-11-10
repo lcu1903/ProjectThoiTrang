@@ -1,0 +1,86 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    var accountIdClaim = User.Claims.FirstOrDefault(c => c.Type == "AccountId");
+    var accountId = accountIdClaim != null ? accountIdClaim.Value : "No Account ID";    
+    <input type="hidden" id="userAccountId" value="@accountId" />    
+}
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-7">
+                    <div class="header__top__left">
+                        <p>Chào mừng bạn đã đến với cửa hàng</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-5">
+                    <div class="header__top__right">
+                        <div class ="header__top__links">                            
+                            <div>
+                                <a href="#"><i class="bi bi-people"></i></a>
+                                <ul style="text-align:left">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        var accountIdClaim = User.Claims.FirstOrDefault(c => c.Type == "AccountId");
+                                        var accountId = accountIdClaim != null ? accountIdClaim.Value : "No Account ID";
+                                        <div style="display:flex">
+                                            <a>Welcome @User.Identity.Name!</a>
+                                        <a style="color: white" class="header__top__links" asp-route-userId="@accountId" asp-page="/Account/Thongtindonhang">Đơn hàng</a>                                       
+                                            <form method="post" asp-page="/Account/Logout">
+                                                <button type="submit" style="border: none; background: none; color: white" class="header__top__links">Đăng xuất</button>
+                                            </form>
+                                        </div>
+                                    }
+                                    else{
+                                        <div>
+                                            <a style="color: white" class="header__top__links" asp-page="/Account/Login">Đăng nhập</a>
+                                            <a style="color: white" class="header__top__links" asp-page="/Account/Register">Đăng ký</a>
+
+                                        </div>
+                                    }
+                                </ul>
+                            </div>
+                        </div>                                           
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="header__logo">
+                    <a asp-page="/Index"><img src="~/assets/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li ><a asp-page="/Index">Trang chủ</a></li>                        
+                        <li><a asp-page="/Product/Index">Cửa hàng</a></li>                        
+                        <li><a asp-page="/Home/Contact">Liên hệ</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="header__nav__option">                    
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        var accountIdClaim = User.Claims.FirstOrDefault(c => c.Type == "AccountId");
+                        var accountId = accountIdClaim != null ? accountIdClaim.Value : "No Account ID";                        
+                        <input type="hidden" id="userAccountId" value="@accountId" />                        
+                        <a asp-page="/Cart/CartDetails" id="cart" asp-route-userId="@accountId"><img src="~/assets/img/icon/cart.png" alt=""> <span>0</span></a>
+                        <div id="countCart" class="price">0 sản phẩm</div>
+                    }          
+                    else
+                    {
+                        <a asp-page="/Account/Login" id="cart" ><img src="~/assets/img/icon/cart.png" alt=""> <span>0</span></a>
+                        <div id="countCart" class="price">0 sản phẩm</div>
+                    }
+                    
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>                    

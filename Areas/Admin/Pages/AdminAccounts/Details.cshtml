@@ -1,0 +1,57 @@
+﻿@page
+@model ProjectThoiTrang.Areas.Admin.Pages.AdminAccounts.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Pages/Shared/_AdminLayout.cshtml";
+}
+<div class="container text-center">
+    <h1> Chi tiết tài khoản truy cập</h1>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <table class="table ">
+            <tbody>                
+                <tr>
+                    <td>Email</td>
+                    <td>@Model.Account.Email</td>
+                </tr>                
+                <tr>
+                    <td>Trạng thái</td>
+                    @if (@Model.Account.Active == true)
+                    {
+                        <td>Kích hoạt</td>
+                    }
+                    else
+                    {
+                        <td>Vô hiệu hóa</td>
+                    }
+                </tr>
+                <tr>
+                    <td>Ngày lập</td>
+                    <td>@Model.Account.CreateDate</td>
+                </tr>
+                <tr>
+                    <td>Quyền</td>
+                    @if (@Model.Account.RoleId == 1)
+                    {
+                        <td>Quản trị viên</td>
+                    }
+                    else
+                    {
+                        <td>Khách hàng</td>
+                    }
+                </tr>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary btn-sm" asp-page="./Edit" asp-route-email="@Model?.Account.Email"><i class=" icon-pencil"></i> Chỉnh sửa </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-dark btn-sm" asp-page="./Index"><i class="icon-logout"></i> Quay về </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

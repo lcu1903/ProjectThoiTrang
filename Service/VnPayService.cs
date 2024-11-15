@@ -1,6 +1,8 @@
 ﻿using ProjectThoiTrang.Helper;
 using ProjectThoiTrang.RequestModel;
+using System.Security.Cryptography;
 using System.Security.Policy;
+using System.Text;
 
 namespace ProjectThoiTrang.Service
 {
@@ -44,9 +46,9 @@ namespace ProjectThoiTrang.Service
         public VnPaymentResponseModel PaymentExecute(IQueryCollection collections)
         {
             var vnpay = new VnPayLibrary();
-            foreach(var(key,value) in collections)
+            foreach (var (key, value) in collections)
             {
-                if(!string.IsNullOrEmpty(key) && key.StartsWith("vnp_"))
+                if (!string.IsNullOrEmpty(key) && key.StartsWith("vnp_"))
                 {
                     vnpay.AddResponseData(key, value.ToString());
                 }
@@ -57,7 +59,19 @@ namespace ProjectThoiTrang.Service
             var vnp_ResponseCode = vnpay.GetResponseData("vnp_ResponseCode");
             var vnp_OrderInfo = vnpay.GetResponseData("vnp_OrderInfo");
             var vnp_Amount = Convert.ToInt64(vnpay.GetResponseData("vnp_Amount")) / 100;
-            bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, _config["VnPay:HashSecret"]);
+
+            // Generate the expected signature
+            var data = new Dictionary<string, string>
+            {
+                { "vnp_TxnRef", vnp_oderId.ToString() },
+                { "vnp_TransactionNo", vnp_TransactionId.ToString() },
+                { "vnp_ResponseCode", vnp_ResponseCode },
+                { "vnp_OrderInfo", vnp_OrderInfo },
+                { "vnp_Amount", (vnp_Amount * 100).ToString() }
+            };
+            var expectedSignature = GenerateValidSignature(data, _config["VnPay:HashSecret"]);
+
+            bool checkSignature = vnp_SecureHash == expectedSignature;
             if (!checkSignature)
             {
                 return new VnPaymentResponseModel
@@ -76,6 +90,15 @@ namespace ProjectThoiTrang.Service
                 Amount = vnp_Amount,
                 VnPayResponseCode = vnp_ResponseCode,
             };
+        }
+
+        private string GenerateValidSignature(Dictionary<string, string> data, string secret)
+        {
+            var sortedData = data.OrderBy(kv => kv.Key).ToList();
+            var dataString = string.Join("&", sortedData.Select(kv => $"{kv.Key}={kv.Value}"));
+            var hash = new HMACSHA512(Encoding.UTF8.GetBytes(secret));
+            var hashBytes = hash.ComputeHash(Encoding.UTF8.GetBytes(dataString));
+            return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
         }
     }
 }

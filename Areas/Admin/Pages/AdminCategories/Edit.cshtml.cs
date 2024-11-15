@@ -49,7 +49,7 @@ namespace ProjectThoiTrang.Areas.Admin.Pages.AdminCategories
                 return NotFound();
             }
 
-            _context.Attach(Category).State = EntityState.Modified;
+            //_context.Attach(Category).State = EntityState.Modified;
 
             try
             {

@@ -50,7 +50,7 @@ namespace ProjectThoiTrang.Areas.Admin.Pages.AdminProducts
             Product.DateModified = DateOnly.FromDateTime(DateTime.Now);
             Product.DateCreated = DateOnly.FromDateTime(DateTime.Now);
 
-            _context.Add(Product);
+            await _context.AddAsync(Product);
             await _context.SaveChangesAsync();
             _notify.Success("Tạo mới thành công");
             return RedirectToPage("Index");
